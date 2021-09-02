@@ -9,12 +9,14 @@ def main():
     FPS = 60
     running = True
     while running:
-        for event in pygame.event.get():
+        events = pygame.event.get()
+        for event in events:
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
                 sys.exit()
 
+        game_window.handle_input(events)
         game_window.draw()
         clock.tick(FPS)
         pygame.display.update()
