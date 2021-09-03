@@ -7,7 +7,7 @@ class Tetromino:
         self.row = row
         self.col = col
         self.grid, self.color = self.get_random_tetromino()
-        self.set_move_down_timer()
+        self.set_move_down_timer(500)
 
     def get_random_tetromino(self):
         I = [[0, 1, 0, 0],
@@ -47,9 +47,24 @@ class Tetromino:
         for row_index, row in enumerate(self.grid):
             for col_index, cell in enumerate(row):
                 if cell == 1:
-                    rect = [col_index * tile_size + self.col * tile_size, row_index * tile_size + self.row * tile_size, tile_size, tile_size]
+                    rect = pygame.Rect((col_index + self.col) * tile_size, (row_index + self.row) * tile_size, tile_size, tile_size)
                     pygame.draw.rect(surface, self.color, rect)
 
-    def set_move_down_timer(self):
+    def get_loc_list(self):
+        loc_list = []
+        for row_index, row in enumerate(self.grid):
+            for col_index, cell in enumerate(row):
+                if cell == 1:
+                    loc_list.append((col_index + self.col, row_index + self.row))
+        return loc_list
+
+    def has_collided_with_bottom(self, grid_rows):
+        loc_list = self.get_loc_list()
+        for loc in loc_list:
+            if loc[1] >= grid_rows - 1:
+                return True
+        return False
+
+    def set_move_down_timer(self, delay):
         self.MOVE_DOWN = pygame.USEREVENT
-        pygame.time.set_timer(self.MOVE_DOWN, 500)
+        pygame.time.set_timer(self.MOVE_DOWN, delay)

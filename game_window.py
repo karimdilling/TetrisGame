@@ -15,7 +15,8 @@ class GameWindow:
 
     def handle_input(self, events):
         for event in events:
-            if event.type == self.grid.tetromino.MOVE_DOWN:
+            if (event.type == self.grid.tetromino.MOVE_DOWN and not
+                    self.grid.tetromino.has_collided_with_bottom(self.grid.rows)):
                 self.grid.tetromino.row += 1
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
