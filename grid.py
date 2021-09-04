@@ -11,10 +11,6 @@ class Grid:
         self.tile_size = tile_size
         self.tetromino = Tetromino(0, cols//2 - 2)
 
-    def check_landing(self):
-        if self.tetromino.row * self.tile_size >= self.rows:
-            self.tetromino.set_move_down_timer(20)
-
     def draw_grid_lines(self):
         for row in range(1, self.rows):
             y = row * self.tile_size

@@ -1,5 +1,6 @@
 import pygame
 from grid import Grid
+from tetromino import Tetromino
 
 
 class GameWindow:
@@ -18,8 +19,15 @@ class GameWindow:
             if (event.type == self.grid.tetromino.MOVE_DOWN and not
                     self.grid.tetromino.has_collided_with_bottom(self.grid.rows)):
                 self.grid.tetromino.row += 1
+                if self.grid.tetromino.has_collided_with_bottom(self.grid.rows):
+                    self.grid.tetromino.has_landed = True
+                    self.grid.tetromino = Tetromino(0, self.grid.cols//2 - 2)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     self.grid.tetromino.col += 1
                 if event.key == pygame.K_LEFT:
                     self.grid.tetromino.col -= 1
+                if event.key == pygame.K_c:
+                    self.grid.tetromino.rotate_clockwise()
+                if event.key == pygame.K_y:
+                    self.grid.tetromino.rotate_counter_clockwise()
