@@ -10,6 +10,28 @@ class Grid:
         self.cols = cols
         self.tile_size = tile_size
         self.tetromino = Tetromino(0, cols//2 - 2)
+        self.landed_tetrominos = self.create_stack()
+
+    def create_stack(self):
+        """The stack contains all the landed tetrominos within the grid"""
+        landed = [[0 for j in range(self.cols)] for i in range(self.rows)]
+        return landed
+
+    def update_stack(self):
+        """Updates the list of all the landed tetrominos"""
+        for row_index, row in enumerate(self.tetromino.grid):
+            for col_index, cell in enumerate(row):
+                if cell != 0 and self.tetromino.has_landed:
+                    self.landed_tetrominos[row_index + self.tetromino.row][col_index + self.tetromino.col] = self.tetromino.grid[row_index][col_index]
+
+    def draw_stack(self):
+        """Draws the stack with all the landed tetrominos onto the grid"""
+        self.update_stack()
+        for row_index, row in enumerate(self.landed_tetrominos):
+            for col_index, cell in enumerate(row):
+                if cell != 0:
+                    rect = pygame.Rect(col_index * self.tile_size, row_index * self.tile_size, self.tile_size, self.tile_size)
+                    pygame.draw.rect(self.surface, "red", rect)
 
     def draw_grid_lines(self):
         for row in range(1, self.rows):
@@ -22,5 +44,10 @@ class Grid:
 
     def draw(self):
         self.surface.fill("black")
+        if self.tetromino.has_collided_with_bottom(self.rows):
+            self.tetromino.has_landed = True
+        self.draw_stack()
+        if self.tetromino.has_landed:
+            self.tetromino = Tetromino(0, self.cols//2 - 2)
         self.tetromino.draw_tetromino(self.tile_size, self.surface)
         self.draw_grid_lines()

@@ -16,7 +16,7 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        game_window.handle_input(events)
+        game_window.handle_events(events)
         game_window.draw()
         clock.tick(FPS)
         pygame.display.update()

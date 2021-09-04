@@ -14,14 +14,11 @@ class GameWindow:
         self.screen.blit(self.grid.surface, (50, 50))
         self.grid.draw()
 
-    def handle_input(self, events):
+    def handle_events(self, events):
         for event in events:
             if (event.type == self.grid.tetromino.MOVE_DOWN and not
                     self.grid.tetromino.has_collided_with_bottom(self.grid.rows)):
                 self.grid.tetromino.row += 1
-                if self.grid.tetromino.has_collided_with_bottom(self.grid.rows):
-                    self.grid.tetromino.has_landed = True
-                    self.grid.tetromino = Tetromino(0, self.grid.cols//2 - 2)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:
                     self.grid.tetromino.col += 1
