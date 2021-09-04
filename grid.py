@@ -31,7 +31,27 @@ class Grid:
             for col_index, cell in enumerate(row):
                 if cell != 0:
                     rect = pygame.Rect(col_index * self.tile_size, row_index * self.tile_size, self.tile_size, self.tile_size)
-                    pygame.draw.rect(self.surface, "red", rect)
+                    pygame.draw.rect(self.surface, "white", rect)
+
+    def check_collision_overlap(self):
+        """Checks if the falling tetromino and one of the landed ones overlap
+        and return True or False, so the movment can be withdrawn before drawing
+        to the grid.
+        """
+        for row_index, row in enumerate(self.tetromino.grid):
+            for col_index, cell in enumerate(row):
+                if cell != 0:
+                    i = row_index + self.tetromino.row
+                    j = col_index + self.tetromino.col
+                    if j < 0:
+                        return True
+                    elif j >= self.cols:
+                        return True
+                    elif i >= self.rows:
+                        return True
+                    elif self.landed_tetrominos[i][j] != 0:
+                        return True
+        return False
 
     def draw_grid_lines(self):
         for row in range(1, self.rows):
@@ -44,8 +64,8 @@ class Grid:
 
     def draw(self):
         self.surface.fill("black")
-        if self.tetromino.has_collided_with_bottom(self.rows):
-            self.tetromino.has_landed = True
+        # if self.tetromino.check_collision_overlap():
+        #     self.tetromino.has_landed = True
         self.draw_stack()
         if self.tetromino.has_landed:
             self.tetromino = Tetromino(0, self.cols//2 - 2)
