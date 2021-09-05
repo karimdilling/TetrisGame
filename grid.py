@@ -55,20 +55,25 @@ class Grid:
         and return True or False, so the movement can be withdrawn before drawing
         to the grid.
         """
-        for row_index, row in enumerate(self.tetromino.grid):
-            for col_index, cell in enumerate(row):
-                if cell != 0:
-                    i = row_index + self.tetromino.row
-                    j = col_index + self.tetromino.col
-                    if j < 0:
-                        return True
-                    elif j >= self.cols:
-                        return True
-                    elif i >= self.rows:
-                        return True
-                    elif self.landed_tetrominos[i][j] != 0:
-                        return True
-        return False
+        if self.tetromino.row >= 0:
+            for row_index, row in enumerate(self.tetromino.grid):
+                for col_index, cell in enumerate(row):
+                    if cell != 0:
+                        i = row_index + self.tetromino.row
+                        j = col_index + self.tetromino.col
+                        if j < 0:
+                            return True
+                        elif j >= self.cols:
+                            return True
+                        elif i >= self.rows:
+                            return True
+                        elif self.landed_tetrominos[i][j] != 0:
+                            return True
+            return False
+
+    def check_game_over(self):
+        if self.tetromino.row <= 0 and self.tetromino.has_landed:
+            print("Game Over")
 
     def draw_grid_lines(self):
         for row in range(1, self.rows):
@@ -84,6 +89,8 @@ class Grid:
         self.clear_row()
         self.draw_stack()
         if self.tetromino.has_landed:
-            self.tetromino = Tetromino(0, self.cols//2 - 2)
+            self.tetromino = Tetromino(-4, self.cols//2 - 2)
+        # if self.tetromino.row >= 0:
         self.tetromino.draw_tetromino(self.tile_size, self.surface)
         self.draw_grid_lines()
+        self.check_game_over()
