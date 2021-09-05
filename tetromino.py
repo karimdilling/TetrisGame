@@ -7,8 +7,9 @@ class Tetromino:
         self.row = row
         self.col = col
         self.grid, self.color = self.get_random_tetromino()
-        self.set_move_down_timer(500)
+        # self.set_move_down_timer(500)
         self.has_landed = False
+        self.fall_speed = 500  # tick time in milliseconds until moving down
 
     def get_random_tetromino(self):
         I = [[0, 1, 0, 0],

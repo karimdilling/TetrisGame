@@ -81,8 +81,6 @@ class Grid:
 
     def draw(self):
         self.surface.fill("black")
-        # if self.tetromino.check_collision_overlap():
-        #     self.tetromino.has_landed = True
         self.clear_row()
         self.draw_stack()
         if self.tetromino.has_landed:
