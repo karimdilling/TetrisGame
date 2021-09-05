@@ -9,7 +9,7 @@ class Grid:
         self.rows = rows
         self.cols = cols
         self.tile_size = tile_size
-        self.tetromino = Tetromino(0, cols//2 - 2)
+        self.tetromino = Tetromino(-4, cols//2 - 2)
         self.landed_tetrominos = self.create_stack()
 
     def create_stack(self):
@@ -33,9 +33,26 @@ class Grid:
                     rect = pygame.Rect(col_index * self.tile_size, row_index * self.tile_size, self.tile_size, self.tile_size)
                     pygame.draw.rect(self.surface, "white", rect)
 
+    def clear_row(self):
+        """Looks for rows in the landed list that are full of non zero numbers
+        (hence that tile is occupied), overwrites those rows with zeros and puts
+        that row in the beginning of the list, so every row above falls one tile
+        down.
+        """
+        for row_index, row in enumerate(self.landed_tetrominos):
+            count = 0
+            for col_index, cell in enumerate(row):
+                if cell != 0:
+                    count += 1
+            if count >= self.cols:
+                for col_index, cell in enumerate(row):
+                    self.landed_tetrominos[row_index][col_index] = 0
+                row_to_lift = self.landed_tetrominos.pop(row_index)
+                self.landed_tetrominos.insert(0, row_to_lift)
+
     def check_collision_overlap(self):
         """Checks if the falling tetromino and one of the landed ones overlap
-        and return True or False, so the movment can be withdrawn before drawing
+        and return True or False, so the movement can be withdrawn before drawing
         to the grid.
         """
         for row_index, row in enumerate(self.tetromino.grid):
@@ -66,6 +83,7 @@ class Grid:
         self.surface.fill("black")
         # if self.tetromino.check_collision_overlap():
         #     self.tetromino.has_landed = True
+        self.clear_row()
         self.draw_stack()
         if self.tetromino.has_landed:
             self.tetromino = Tetromino(0, self.cols//2 - 2)

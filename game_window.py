@@ -7,6 +7,7 @@ class GameWindow:
         self.screen = pygame.display.set_mode((600, 800))
         pygame.display.set_caption("Tetris")
         self.grid = Grid(16, 10, 30)
+        self.pause = False
 
     def draw(self):
         self.screen.fill("blue")
@@ -37,3 +38,12 @@ class GameWindow:
                     self.grid.tetromino.rotate_counter_clockwise()
                     if self.grid.check_collision_overlap():
                         self.grid.tetromino.rotate_clockwise()
+                if event.key == pygame.K_SPACE:
+                    pygame.time.set_timer(self.grid.tetromino.MOVE_DOWN, 50)
+                if event.key == pygame.K_p:
+                    if self.pause is False:
+                        pygame.time.set_timer(self.grid.tetromino.MOVE_DOWN, 0)
+                        self.pause = True
+                    else:
+                        pygame.time.set_timer(self.grid.tetromino.MOVE_DOWN, 500)
+                        self.pause = False
