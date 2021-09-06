@@ -12,7 +12,7 @@ def main():
     font_pos_game_over = (game_window.screen.get_width()/2 - font_surface_game_over.get_width()/2, game_window.screen.get_height()/2 - font_surface_game_over.get_height()/2)
     font_pos_game_over_2 = (game_window.screen.get_width()/2 - font_surface_game_over_2.get_width()/2, font_pos_game_over[1] + 100)
     clock = pygame.time.Clock()
-    FPS = 60 
+    FPS = 60
     running = True
     while running:
         events = pygame.event.get()

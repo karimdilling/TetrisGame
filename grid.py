@@ -3,15 +3,15 @@ from tetromino import Tetromino
 
 
 class Grid:
-    def __init__(self, rows, cols, tile_size, font_surface):
+    def __init__(self, rows, cols, tile_size):
         self.surface = pygame.Surface((cols * tile_size, rows * tile_size))
         self.rect = self.surface.get_rect()
         self.rows = rows
         self.cols = cols
         self.tile_size = tile_size
         self.tetromino = Tetromino(-4, cols//2 - 2)
+        self.next_tetromino = Tetromino(-4, cols//2 - 2)
         self.landed_tetrominos = self.create_stack()
-        self.font_surface = font_surface
 
     def create_stack(self):
         """The stack contains all the landed tetrominos within the grid"""
@@ -57,7 +57,7 @@ class Grid:
         to the grid.
         """
         for row_index, row in enumerate(self.tetromino.grid):
-            if row_index + self.tetromino.row >= 0: # Makes sure no negative rows get checked (tetrominos fall in from the top)
+            if row_index + self.tetromino.row >= 0:  # Makes sure no negative rows get checked (tetrominos fall in from the top)
                 for col_index, cell in enumerate(row):
                     if cell != 0:
                         i = row_index + self.tetromino.row
@@ -85,9 +85,10 @@ class Grid:
         self.surface.fill("black")
         self.clear_row()
         self.draw_stack()
-    
+
     def run_tetromino_and_grid(self):
         if self.tetromino.has_landed:
-            self.tetromino = Tetromino(-4, self.cols//2 - 2)
+            self.tetromino = self.next_tetromino
+            self.next_tetromino = Tetromino(-4, self.cols//2 - 2)
         self.tetromino.draw_tetromino(self.tile_size, self.surface)
         self.draw_grid_lines()
