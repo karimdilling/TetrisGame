@@ -14,6 +14,7 @@ class GameWindow:
         self.fall_time = 0
         self.font_surface = font_surface
         self.start = True
+        self.points = self.grid.points
 
     def draw(self):
         self.screen.fill("blue")
@@ -38,6 +39,7 @@ class GameWindow:
             self.next_shape.tetromino.draw_tetromino(30, self.next_shape.surface)
         self.next_shape.draw_grid_lines()
         self.screen.blit(self.next_shape.surface, (400, 50))
+        self.points = self.grid.points
 
     def check_game_over(self):
         if self.grid.tetromino.has_landed:
@@ -58,7 +60,7 @@ class GameWindow:
                 if self.grid.check_collision_overlap():
                     self.grid.tetromino.row -= 1
                     self.grid.tetromino.has_landed = True
-            # Handling keyboard input
+        # Handling keyboard input
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RIGHT:

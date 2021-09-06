@@ -12,6 +12,7 @@ class Grid:
         self.tetromino = Tetromino(-4, cols//2 - 2)
         self.next_tetromino = Tetromino(-4, cols//2 - 2)
         self.landed_tetrominos = self.create_stack()
+        self.points = 0
 
     def create_stack(self):
         """The stack contains all the landed tetrominos within the grid"""
@@ -50,6 +51,7 @@ class Grid:
                     self.landed_tetrominos[row_index][col_index] = 0
                 row_to_lift = self.landed_tetrominos.pop(row_index)
                 self.landed_tetrominos.insert(0, row_to_lift)
+                self.points += 1
 
     def check_collision_overlap(self):
         """Checks if the falling tetromino and one of the landed ones overlap
