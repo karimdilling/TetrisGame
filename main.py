@@ -4,9 +4,15 @@ from game_window import GameWindow
 
 
 def main():
-    game_window = GameWindow()
+    font = pygame.font.SysFont(None, 72)
+    font_small = pygame.font.SysFont(None, 36)
+    font_surface_game_over = font.render("Game Over", True, "white")
+    font_surface_game_over_2 = font_small.render("For restart press r, otherwise close the window", True, "white")
+    game_window = GameWindow(font_surface_game_over)
+    font_pos_game_over = (game_window.screen.get_width()/2 - font_surface_game_over.get_width()/2, game_window.screen.get_height()/2 - font_surface_game_over.get_height()/2)
+    font_pos_game_over_2 = (game_window.screen.get_width()/2 - font_surface_game_over_2.get_width()/2, font_pos_game_over[1] + 100)
     clock = pygame.time.Clock()
-    FPS = 60
+    FPS = 60 
     running = True
     while running:
         events = pygame.event.get()
@@ -25,9 +31,14 @@ def main():
                     else:
                         game_window.pause = False
 
-        if not game_window.pause:
+        if not game_window.pause and not game_window.check_game_over():
             game_window.handle_events(events, clock)
-        game_window.draw()
+            game_window.draw()
+        elif game_window.check_game_over():
+            game_window.screen.fill("black")
+            game_window.screen.blit(font_surface_game_over, font_pos_game_over)
+            game_window.screen.blit(font_surface_game_over_2, font_pos_game_over_2)
+
         clock.tick(FPS)
         pygame.display.update()
 

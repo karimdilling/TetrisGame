@@ -3,7 +3,7 @@ from tetromino import Tetromino
 
 
 class Grid:
-    def __init__(self, rows, cols, tile_size):
+    def __init__(self, rows, cols, tile_size, font_surface):
         self.surface = pygame.Surface((cols * tile_size, rows * tile_size))
         self.rect = self.surface.get_rect()
         self.rows = rows
@@ -11,6 +11,7 @@ class Grid:
         self.tile_size = tile_size
         self.tetromino = Tetromino(-4, cols//2 - 2)
         self.landed_tetrominos = self.create_stack()
+        self.font_surface = font_surface
 
     def create_stack(self):
         """The stack contains all the landed tetrominos within the grid"""
@@ -55,8 +56,8 @@ class Grid:
         and return True or False, so the movement can be withdrawn before drawing
         to the grid.
         """
-        if self.tetromino.row >= 0:
-            for row_index, row in enumerate(self.tetromino.grid):
+        for row_index, row in enumerate(self.tetromino.grid):
+            if row_index + self.tetromino.row >= 0: # Makes sure no negative rows get checked (tetrominos fall in from the top)
                 for col_index, cell in enumerate(row):
                     if cell != 0:
                         i = row_index + self.tetromino.row
@@ -69,11 +70,7 @@ class Grid:
                             return True
                         elif self.landed_tetrominos[i][j] != 0:
                             return True
-            return False
-
-    def check_game_over(self):
-        if self.tetromino.row <= 0 and self.tetromino.has_landed:
-            print("Game Over")
+        return False
 
     def draw_grid_lines(self):
         for row in range(1, self.rows):
@@ -84,13 +81,13 @@ class Grid:
             pygame.draw.line(self.surface, "grey", (x, 0), (x, self.surface.get_height()))
         pygame.draw.rect(self.surface, "grey", self.rect, 1)
 
-    def draw(self):
+    def run_stack(self):
         self.surface.fill("black")
         self.clear_row()
         self.draw_stack()
+    
+    def run_tetromino_and_grid(self):
         if self.tetromino.has_landed:
             self.tetromino = Tetromino(-4, self.cols//2 - 2)
-        # if self.tetromino.row >= 0:
         self.tetromino.draw_tetromino(self.tile_size, self.surface)
         self.draw_grid_lines()
-        self.check_game_over()
