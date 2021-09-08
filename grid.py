@@ -41,6 +41,7 @@ class Grid:
         that row in the beginning of the list, so every row above falls one tile
         down.
         """
+        clear_counter = 0
         for row_index, row in enumerate(self.landed_tetrominos):
             count = 0
             for col_index, cell in enumerate(row):
@@ -51,7 +52,16 @@ class Grid:
                     self.landed_tetrominos[row_index][col_index] = 0
                 row_to_lift = self.landed_tetrominos.pop(row_index)
                 self.landed_tetrominos.insert(0, row_to_lift)
-                self.points += 1
+                clear_counter += 1
+                # self.points += 40
+        if clear_counter == 1:
+            self.points += 40
+        elif clear_counter == 2:
+            self.points += 100
+        elif clear_counter == 3:
+            self.points += 300
+        elif clear_counter >= 4:
+            self.points += 1200
 
     def check_collision_overlap(self):
         """Checks if the falling tetromino and one of the landed ones overlap
