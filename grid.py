@@ -33,7 +33,22 @@ class Grid:
             for col_index, cell in enumerate(row):
                 if cell != 0:
                     rect = pygame.Rect(col_index * self.tile_size, row_index * self.tile_size, self.tile_size, self.tile_size)
-                    pygame.draw.rect(self.surface, "white", rect)
+                    color = (0, 0, 0)
+                    if cell == 1:
+                        color = (0, 255, 255)
+                    elif cell == 2:
+                        color = (0, 0, 255)
+                    elif cell == 3:
+                        color = (255, 127, 0)
+                    elif cell == 4:
+                        color = (255, 255, 0)
+                    elif cell == 5:
+                        color = (255, 0, 0)
+                    elif cell == 6:
+                        color = (0, 255, 0)
+                    elif cell == 7:
+                        color = (128, 0, 128)
+                    pygame.draw.rect(self.surface, color, rect)
 
     def clear_row(self):
         """Looks for rows in the landed list that are full of non zero numbers

@@ -17,7 +17,7 @@ class GameWindow:
         self.points = self.grid.points
 
     def draw(self):
-        self.screen.fill("blue")
+        self.screen.fill((39, 40, 45))
         self.screen.blit(self.grid.surface, (50, 50))
         self.grid.run_stack()
         if self.check_game_over():

@@ -16,29 +16,29 @@ class Tetromino:
              [0, 1, 0, 0],
              [0, 1, 0, 0],
              [0, 1, 0, 0]]
-        J = [[0, 0, 1, 0],
-             [0, 0, 1, 0],
-             [0, 1, 1, 0],
+        J = [[0, 0, 2, 0],
+             [0, 0, 2, 0],
+             [0, 2, 2, 0],
              [0, 0, 0, 0]]
-        L = [[0, 1, 0, 0],
-             [0, 1, 0, 0],
-             [0, 1, 1, 0],
+        L = [[0, 3, 0, 0],
+             [0, 3, 0, 0],
+             [0, 3, 3, 0],
              [0, 0, 0, 0]]
         O = [[0, 0, 0, 0],
-             [0, 1, 1, 0],
-             [0, 1, 1, 0],
+             [0, 4, 4, 0],
+             [0, 4, 4, 0],
              [0, 0, 0, 0]]
         Z = [[0, 0, 0, 0],
-             [0, 1, 1, 0],
-             [0, 0, 1, 1],
+             [0, 5, 5, 0],
+             [0, 0, 5, 5],
              [0, 0, 0, 0]]
         Z2 = [[0, 0, 0, 0],
-              [0, 0, 1, 1],
-              [0, 1, 1, 0],
+              [0, 0, 6, 6],
+              [0, 6, 6, 0],
               [0, 0, 0, 0]]
         T = [[0, 0, 0, 0],
-             [0, 0, 1, 0],
-             [0, 1, 1, 1],
+             [0, 0, 7, 0],
+             [0, 7, 7, 7],
              [0, 0, 0, 0]]
         tetrominos = [I, O, T, Z2, Z, J, L]
         colors = [(0, 255, 255), (255, 255, 0), (128, 0, 128), (0, 255, 0), (255, 0, 0), (0, 0, 255), (255, 127, 0)]
@@ -48,7 +48,7 @@ class Tetromino:
     def draw_tetromino(self, tile_size, surface):
         for row_index, row in enumerate(self.grid):
             for col_index, cell in enumerate(row):
-                if cell == 1:
+                if cell != 0:
                     rect = pygame.Rect((col_index + self.col) * tile_size, (row_index + self.row) * tile_size, tile_size, tile_size)
                     pygame.draw.rect(surface, self.color, rect)
 
@@ -56,7 +56,7 @@ class Tetromino:
         loc_list = []
         for row_index, row in enumerate(self.grid):
             for col_index, cell in enumerate(row):
-                if cell == 1:
+                if cell != 0:
                     loc_list.append((col_index + self.col, row_index + self.row))
         return loc_list
 
